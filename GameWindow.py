@@ -33,7 +33,9 @@ class Game:
         self.action_history = tk.Text(self.canvas)
         self.canvas.create_window(450, 120, window = self.action_history, height = 220, width = 280)
         self.action_history.bind("<1>", lambda event: self.action_history.focus_set())
-        self.tiles_history = {}
+        self.tiles_history = [['a', 'b', 'c'], 
+                              ['d', 'e', 'f'], 
+                              ['g', 'h', 'i']]
         self.shape_history = {}
 
         #Turn config
@@ -73,9 +75,6 @@ class Game:
         coord_x = coordinates[0] + int(((self.canvas.winfo_width() / 2)/self.columns) / 2)
         coord_y = coordinates[1] + int((self.canvas.winfo_height()/self.columns) / 2)
 
-        #print(coordinates)
-
-
         if tile_color == "#8cb4d2":
 
             history = "{0} placed on ({1}, {2})\n"
@@ -83,7 +82,7 @@ class Game:
             self.action_history.config(state="normal")
             self.action_history.insert("end", history.format(self.turn, row, column))
             self.action_history.config(state="disabled")
-            self.tiles_history[row, column] = self.turn
+            self.tiles_history[row][column] = self.turn
             
             if self.turn == "X":
                 self.turn = "O"
@@ -98,8 +97,38 @@ class Game:
                 self.shape_history[row, column] = self.canvas.create_image(coord_x, coord_y,
                 image = self.o_pic)
 
-            #new_color = "#8cb4d2" if  tile_color == "#494f83" else "#494f83"
             self.canvas.itemconfigure(tile, fill=new_color)
+        
+            #Check winner
+            if len(self.shape_history) > 4:
+                winner = 'X' if self.turn == 'O' else 'O'
+                if self.is_winner():
+                    for tile in self.tiles.values():
+                        if self.canvas.itemcget(tile, "fill") == "#8cb4d2":
+                            self.canvas.itemconfigure(tile, fill="#a2d6ec")
+                    self.action_history.config(state="normal")   
+                    self.action_history.insert("end", (winner + " has won!\n"))
+                    self.action_history.config(state="disabled")
+                elif len(self.shape_history) == 9:
+                    self.action_history.config(state="normal")   
+                    self.action_history.insert("end", ("It's a draw.\n"))
+                    self.action_history.config(state="disabled")
+
+
+    def is_winner(self):
+        return ((self.tiles_history[0][0] == self.tiles_history[0][1] == self.tiles_history[0][2]) or #Upper Row
+            (self.tiles_history[1][0] == self.tiles_history[1][1] == self.tiles_history[1][2]) or #Middle Row
+            (self.tiles_history[2][0] == self.tiles_history[2][1] == self.tiles_history[2][2]) or #Bottom Row
+
+            (self.tiles_history[0][0] == self.tiles_history[1][0] == self.tiles_history[2][0]) or #Left Column
+            (self.tiles_history[0][1] == self.tiles_history[1][1] == self.tiles_history[2][1]) or #Middle Column
+            (self.tiles_history[0][2] == self.tiles_history[1][2] == self.tiles_history[2][2]) or #Right Column
+            
+            #Upper Left to Bottom Right Diagonal
+            (self.tiles_history[0][0] == self.tiles_history[1][1] == self.tiles_history[2][2]) or 
+            #Bottom Left to Upper Right Diagonal
+            (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0]))
+
 
     def new_game(self):
 
@@ -109,7 +138,9 @@ class Game:
         self.action_history.delete("1.0", tk.END)
         self.x_turns = 0
         self.o_turns = 0
-        self.tiles_history = {}
+        self.tiles_history = [['a', 'b', 'c'], 
+                              ['d', 'e', 'f'], 
+                              ['g', 'h', 'i']]
         self.shape_history = {}
         
         if self.first_turn == "X":
