@@ -8,7 +8,9 @@ class Game:
         self.rationality = rationality
         self.master.title("Tic Tac Toe")
         self.master.resizable(width = False, height = False)
-        self.canvas = tk.Canvas(self.master, width=600, height=300, borderwidth=0, highlightthickness=0, background="#a2d6ec")
+        self.w_height = 300
+        self.w_width = self.w_height * 2
+        self.canvas = tk.Canvas(self.master, width=self.w_width, height=self.w_height, borderwidth=0, highlightthickness=0, background="#a2d6ec")
         self.canvas.pack(side="top", fill="both", expand="true")
 
         #Number of rows and columns
@@ -16,7 +18,12 @@ class Game:
         self.columns = 3
 
         #Additional properties
+        image_reduce_size = 16
         self.result = "on-going"
+        self.x_pic_orig = tk.PhotoImage(file="x_pic.png")
+        self.x_pic = self.x_pic_orig.subsample(image_reduce_size,image_reduce_size)
+        self.o_pic_orig = tk.PhotoImage(file="o_pic.png")
+        self.o_pic = self.o_pic_orig.subsample(image_reduce_size,image_reduce_size)
         
         #List of tiles
         self.tiles = {}
@@ -62,6 +69,12 @@ class Game:
     def clicked(self, row, column):
         tile = self.tiles[row,column]
         tile_color = self.canvas.itemcget(tile, "fill")
+        coordinates = self.canvas.coords(tile)
+        coord_x = coordinates[0] + int(((self.canvas.winfo_width() / 2)/self.columns) / 2)
+        coord_y = coordinates[1] + int((self.canvas.winfo_height()/self.columns) / 2)
+
+        #print(coordinates)
+
 
         if tile_color == "#8cb4d2":
 
@@ -76,20 +89,28 @@ class Game:
                 self.turn = "O"
                 self.x_turns += 1
                 new_color = "#5f719d"
+                self.shape_history[row, column] = self.canvas.create_image(coord_x, coord_y,
+                image = self.x_pic)
             elif self.turn == "O":
                 self.turn = "X"
                 self.o_turns += 1
                 new_color = "#494f83"
+                self.shape_history[row, column] = self.canvas.create_image(coord_x, coord_y,
+                image = self.o_pic)
 
             #new_color = "#8cb4d2" if  tile_color == "#494f83" else "#494f83"
             self.canvas.itemconfigure(tile, fill=new_color)
 
     def new_game(self):
-        self.tiles_history = {}
+
+        for shape in self.shape_history.values():
+            self.canvas.delete(shape)
         self.action_history.config(state="normal")
         self.action_history.delete("1.0", tk.END)
         self.x_turns = 0
         self.o_turns = 0
+        self.tiles_history = {}
+        self.shape_history = {}
         
         if self.first_turn == "X":
             self.first_turn = "O"
