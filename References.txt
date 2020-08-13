@@ -1,1 +1,2 @@
 https://www.programming-techniques.com/2019/10/tic-tac-toe-game-project-using-python.html
+https://stackoverflow.com/questions/1056316/algorithm-for-determining-tic-tac-toe-game-over

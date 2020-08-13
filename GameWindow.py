@@ -37,9 +37,9 @@ class Game:
         self.action_history = tk.Text(self.canvas)
         self.canvas.create_window(450, 120, window = self.action_history, height = 220, width = 280)
         self.action_history.bind("<1>", lambda event: self.action_history.focus_set())
-        self.tiles_history = [['a', 'b', 'c'], 
-                              ['d', 'e', 'f'], 
-                              ['g', 'h', 'i']]
+        self.tiles_history = [['', '', ''], 
+                              ['', '', ''], 
+                              ['', '', '']]
         self.shape_history = {}
         self.available_moves = []
 
@@ -96,13 +96,13 @@ class Game:
             self.x_turns += 1
             self.shape_history[row, column] = self.canvas.create_image(coord_x, coord_y, image = self.x_pic)
             self.canvas.itemconfigure(tile, fill=self.x_color)
-            self.available_moves.remove((row, column)) 
+            self.available_moves.remove((row, column))
 
-            if self.is_winner():
-                self.end_game("win")
-            elif len(self.shape_history) == 9:
+            winner = self.is_winner()
+
+            if winner == None and len(self.shape_history) == 9:
                 self.end_game("draw")
-            else:
+            elif winner == None and len(self.available_moves) > 0:
                 #After player turn, AI's turn will activate
                 self.AI_turn()       
 
@@ -114,6 +114,11 @@ class Game:
             row = randomStrat[0]
             column = randomStrat[1]
             self.available_moves.remove(randomStrat)
+        elif self.rationality == 2:
+            pass
+        elif self.rationality == 3:
+            row = 0
+            column = 0
 
         #Get tile object using coordinates
         tile = self.tiles[row,column]
@@ -132,34 +137,58 @@ class Game:
         self.shape_history[row, column] = self.canvas.create_image(coord_x, coord_y, image = self.o_pic)
 
         self.turn = "X"
-        self.o_turns += 1   
+        self.o_turns += 1 
 
-        if self.is_winner():
-            self.end_game("win")
-        elif len(self.shape_history) == 9:
+        if self.is_winner() == None and len(self.shape_history) == 9:
             self.end_game("draw")
 
     #Bool to check if someone wins
     def is_winner(self):
-        return ((self.tiles_history[0][0] == self.tiles_history[0][1] == self.tiles_history[0][2]) or #Upper Row
-            (self.tiles_history[1][0] == self.tiles_history[1][1] == self.tiles_history[1][2]) or #Middle Row
-            (self.tiles_history[2][0] == self.tiles_history[2][1] == self.tiles_history[2][2]) or #Bottom Row
 
-            (self.tiles_history[0][0] == self.tiles_history[1][0] == self.tiles_history[2][0]) or #Left Column
-            (self.tiles_history[0][1] == self.tiles_history[1][1] == self.tiles_history[2][1]) or #Middle Column
-            (self.tiles_history[0][2] == self.tiles_history[1][2] == self.tiles_history[2][2]) or #Right Column
+        winner = None
+
+        #Horizontal Check
+        for i in range(self.rows):
+            if self.tiles_history[i][0] == self.tiles_history[i][1] == self.tiles_history[i][2] != '':
+                winner = self.tiles_history[i][0]
+                break
+        
+        #Vertical Check
+        for i in range(self.columns):
+            if self.tiles_history[0][i] == self.tiles_history[1][i] == self.tiles_history[2][i] != '':
+                winner = self.tiles_history[0][i]
+                break
+
+        #Diagonal Check
+        if ((self.tiles_history[0][0] == self.tiles_history[1][1] == self.tiles_history[2][2] != '') or 
+           (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0] != '') ):
+            winner = self.tiles_history[1][1]
+
+        #End game if there is a winner
+        if winner != None:
+            self.end_game(winner)
+
+        return winner
+
+        # return ((self.tiles_history[0][0] == self.tiles_history[0][1] == self.tiles_history[0][2]) or #Upper Row
+        #     (self.tiles_history[1][0] == self.tiles_history[1][1] == self.tiles_history[1][2]) or #Middle Row
+        #     (self.tiles_history[2][0] == self.tiles_history[2][1] == self.tiles_history[2][2]) or #Bottom Row
+
+        #     (self.tiles_history[0][0] == self.tiles_history[1][0] == self.tiles_history[2][0]) or #Left Column
+        #     (self.tiles_history[0][1] == self.tiles_history[1][1] == self.tiles_history[2][1]) or #Middle Column
+        #     (self.tiles_history[0][2] == self.tiles_history[1][2] == self.tiles_history[2][2]) or #Right Column
             
-            #Upper Left to Bottom Right Diagonal
-            (self.tiles_history[0][0] == self.tiles_history[1][1] == self.tiles_history[2][2]) or 
-            #Bottom Left to Upper Right Diagonal
-            (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0]))
+        #     #Upper Left to Bottom Right Diagonal
+        #     (self.tiles_history[0][0] == self.tiles_history[1][1] == self.tiles_history[2][2]) or 
+        #     #Bottom Left to Upper Right Diagonal
+        #     (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0]))
 
     #Check if someone has already won
     def end_game(self, mode):
         if mode == "draw":
             self.print_to_game_log("It's a draw.\n")
         else:
-            winner = 'X' if self.turn == 'O' else 'O'
+            winner = mode
             for tile in self.tiles.values():
                 if self.canvas.itemcget(tile, "fill") == "#8cb4d2":
                     self.canvas.itemconfigure(tile, fill="#a2d6ec")
@@ -180,9 +209,9 @@ class Game:
         self.action_history.delete("1.0", tk.END)
         self.x_turns = 0
         self.o_turns = 0
-        self.tiles_history = [['a', 'b', 'c'], 
-                              ['d', 'e', 'f'], 
-                              ['g', 'h', 'i']]
+        self.tiles_history = [['', '', ''], 
+                              ['', '', ''], 
+                              ['', '', '']]
         self.available_moves = []
         self.shape_history = {}
         
