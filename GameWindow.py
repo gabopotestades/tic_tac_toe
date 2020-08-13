@@ -1,4 +1,5 @@
 import tkinter as tk
+from PlayIntelligently import  IntelligentStrategy
 from PlayRandomly import RandomStrategy
 
 class Game:
@@ -21,7 +22,6 @@ class Game:
 
         #Additional properties
         image_reduce_size = 16
-        self.result = "on-going"
         self.x_color = "#5f719d"
         self.x_pic_orig = tk.PhotoImage(file="x_pic.png")
         self.x_pic = self.x_pic_orig.subsample(image_reduce_size,image_reduce_size)
@@ -111,14 +111,20 @@ class Game:
 
         if self.rationality == 1:
             randomStrat = RandomStrategy(self.available_moves).random_move()
+
             row = randomStrat[0]
             column = randomStrat[1]
             self.available_moves.remove(randomStrat)
+
         elif self.rationality == 2:
             pass
         elif self.rationality == 3:
-            row = 0
-            column = 0
+            intelligentStrat = IntelligentStrategy(self.tiles_history, len(self.available_moves),
+             self.rows, self.columns).bestMove()
+
+            row = intelligentStrat[0]
+            column = intelligentStrat[1]
+            self.available_moves.remove(intelligentStrat)
 
         #Get tile object using coordinates
         tile = self.tiles[row,column]
