@@ -51,9 +51,12 @@ class HardcodedStrategy:
 
             elif self.first_turn == 'X':
                 
+                #If X entered at the center and O is second turn
                 if len(self.available_moves) == 8:
                     #Select random corner
                     best_move = choice([(0,2), (2,0), (0,0), (2,2) ]) 
+                
+                #If X entered first move not in center and corner then second move is corner
                 if len(self.available_moves) == 6:
                     if self.tiles_history[1][2] == 'X':
                         if self.tiles_history[0][0] == 'X':
@@ -66,7 +69,7 @@ class HardcodedStrategy:
                         elif self.tiles_history[2][2] == 'X':
                             best_move = (2,0)
 
-        #If no best move
+        #If no best move select random (low chance)
         if best_move == None: best_move = choice(self.available_moves)
 
         return best_move
@@ -87,4 +90,5 @@ class HardcodedStrategy:
            (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0] == identifier) ):
             return True
         
+        #Return false if no one wins in current config
         return False

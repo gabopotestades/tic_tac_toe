@@ -10,11 +10,13 @@ class IntelligentStrategy:
 
     def bestMove(self):
 
+        #To skip first move since it's always (0,0) if O is first
         if self.avail_moves == 9: return (0,0)
 
         bestScore = -inf
         move = ()
 
+        #Instantiate root node for Minimax
         for i in range(self.rows):
             for j in range(self.columns):
                 if self.tiles_history[i][j] == '':
@@ -36,6 +38,7 @@ class IntelligentStrategy:
 
         if result != None: return score_lookup[result]
 
+        #If bool is true, pick move with chance to win
         if isMaximizing:
 
             maximizing_BestScore = -inf
@@ -52,6 +55,7 @@ class IntelligentStrategy:
             
             return maximizing_BestScore
 
+        #If bool is false, pick move with chance to not lose
         else:
 
             minimizing_BestScore = inf
@@ -70,8 +74,6 @@ class IntelligentStrategy:
 
     def checkWinner(self):
 
-        if self.avail_moves == 0 : return 'draw'
-
         #Horizontal Check
         for i in range(self.rows):
             if self.tiles_history[i][0] == self.tiles_history[i][1] == self.tiles_history[i][2] != '':
@@ -86,5 +88,6 @@ class IntelligentStrategy:
         if ((self.tiles_history[0][0] == self.tiles_history[1][1] == self.tiles_history[2][2] != '') or 
            (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0] != '') ):
             return self.tiles_history[1][1]
-        
-        
+
+        #Check if no possible moves left 
+        if self.avail_moves == 0 : return 'draw'
