@@ -26,7 +26,7 @@ class Main:
         #Taken from https://www.color-hex.com/color-palette/95969
         self.background_color = "#a2d6ec"
 
-        self.master.minsize(width = 200, height = 320)
+        self.master.minsize(width = 200, height = 360)
         self.master.resizable(width = False, height = False)
         self.master.config(bg = self.background_color)
         var = tk.IntVar()
@@ -52,13 +52,17 @@ class Main:
         rBtnHard.config(bg = self.background_color, font=("Calibri", 12))
         rBtnHard.grid(row=4, columnspan=4, ipadx=0, ipady=0)
 
-        rBtnSearch = tk.Radiobutton(self.master, text = "Level 2 (Search strategy)", variable = var, value = 3, command = sel)
+        rBtnSearch = tk.Radiobutton(self.master, text = "Level 2 (Minimax)", variable = var, value = 3, command = sel)
         rBtnSearch.config(bg = self.background_color, font=("Calibri", 12))
         rBtnSearch.grid(row=5, columnspan=4, ipadx=0, ipady=0)
 
+        rBtnSearch = tk.Radiobutton(self.master, text = "Level 3 (Alphabeta Prunning)", variable = var, value = 4, command = sel)
+        rBtnSearch.config(bg = self.background_color, font=("Calibri", 12))
+        rBtnSearch.grid(row=6, columnspan=4, ipadx=0, ipady=0)
+
         btnAccept = tk.Button(self.master, text = "Accept", command = choice)
         btnAccept.config(font=("Calibri", 12))
-        btnAccept.grid(row=7, columnspan =4, ipadx = 10, pady=(20, 0))
+        btnAccept.grid(row=8, columnspan =4, ipadx = 10, pady=(20, 0))
 
 if __name__ == "__main__":
     root = tk.Tk()

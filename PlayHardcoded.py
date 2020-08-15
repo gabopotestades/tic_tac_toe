@@ -74,20 +74,20 @@ class HardcodedStrategy:
 
         return best_move
 
-    def checkWinner(self, identifier):
+    def checkWinner(self, player):
         #Horizontal Check
         for i in range(self.rows):
-            if self.tiles_history[i][0] == self.tiles_history[i][1] == self.tiles_history[i][2] == identifier:
+            if self.tiles_history[i][0] == self.tiles_history[i][1] == self.tiles_history[i][2] == player:
                 return True
         
         #Vertical Check
         for i in range(self.columns):
-            if self.tiles_history[0][i] == self.tiles_history[1][i] == self.tiles_history[2][i] == identifier:
+            if self.tiles_history[0][i] == self.tiles_history[1][i] == self.tiles_history[2][i] == player:
                 return True
 
         #Diagonal Check
-        if ((self.tiles_history[0][0] == self.tiles_history[1][1] == self.tiles_history[2][2] == identifier) or 
-           (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0] == identifier) ):
+        if ((self.tiles_history[0][0] == self.tiles_history[1][1] == self.tiles_history[2][2] == player) or 
+           (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0] == player) ):
             return True
         
         #Return false if no one wins in current config
