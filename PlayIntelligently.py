@@ -91,19 +91,16 @@ class IntelligentStrategy:
                     if self.tiles_history[i][j] == '':
                         self.tiles_history[i][j]  = 'O'
                         self.avail_moves -= 1 
-                        # o_score = self.evaluationHeuristic('O')
-                        # x_score = self.evaluationHeuristic('X')
-                        # eval_score = o_score - x_score
                         eval_score = self.evaluationHeuristic('O') - self.evaluationHeuristic('X')
                         score = self.alphaBetaPrunning(depth + 1, alpha, beta, False) + eval_score
                         self.avail_moves += 1
                         self.tiles_history[i][j] = ''
                         maximizing_BestScore = max(score, maximizing_BestScore)
                         alpha = max(alpha, score)
-                        #if beta <= alpha:
-                            #break
-                #if beta <= alpha:
-                    #break
+                        if beta <= alpha:
+                            break
+                if beta <= alpha:
+                    break
             
             return maximizing_BestScore
 
@@ -117,19 +114,16 @@ class IntelligentStrategy:
                     if self.tiles_history[i][j] == '':
                         self.tiles_history[i][j]  = 'X'
                         self.avail_moves -= 1
-                        # o_score = self.evaluationHeuristic('O')
-                        # x_score = self.evaluationHeuristic('X')
-                        # eval_score = x_score - o_score
-                        eval_score = self.evaluationHeuristic('X') - self.evaluationHeuristic('O')
+                        eval_score = self.evaluationHeuristic('O') - self.evaluationHeuristic('X')
                         score = self.alphaBetaPrunning(depth + 1, alpha, beta, True) + eval_score
                         self.avail_moves += 1
                         self.tiles_history[i][j] = ''
                         minimizing_BestScore = min(score, minimizing_BestScore)
                         beta = min(beta, score)
-                        #if beta <= alpha:
-                            #break
-                #if beta <= alpha:
-                    #break
+                        if beta <= alpha:
+                            break
+                if beta <= alpha:
+                    break
             
             return minimizing_BestScore  
 

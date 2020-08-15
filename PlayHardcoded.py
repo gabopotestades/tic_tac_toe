@@ -58,16 +58,22 @@ class HardcodedStrategy:
                 
                 #If X entered first move not in center and corner then second move is corner
                 if len(self.available_moves) == 6:
-                    if self.tiles_history[1][2] == 'X':
-                        if self.tiles_history[0][0] == 'X':
-                            best_move = (0,2)
-                        elif self.tiles_history[2][0] == 'X':
-                            best_move = (2,2)
-                    elif self.tiles_history[1][0] == 'X':
-                        if self.tiles_history[0][2] == 'X':
-                            best_move = (0,0)
-                        elif self.tiles_history[2][2] == 'X':
-                            best_move = (2,0)
+                    if self.tiles_history[1][2] == 'X' and self.tiles_history[0][0] == 'X':
+                        best_move = (0,2)
+                    elif self.tiles_history[1][2] == 'X' and self.tiles_history[2][0] == 'X':
+                        best_move = (2,2)
+                    elif self.tiles_history[1][0] == 'X' and self.tiles_history[0][2] == 'X':
+                        best_move = (0,0)
+                    elif self.tiles_history[1][0] == 'X' and self.tiles_history[2][2] == 'X':
+                        best_move = (2,0)
+                    elif self.tiles_history[0][1] == 'X' and self.tiles_history[1][0] == 'X':
+                        best_move = (0,0)
+                    elif self.tiles_history[0][1] == 'X' and self.tiles_history[1][2] == 'X':
+                        best_move = (0,2)
+                    elif self.tiles_history[2][1] == 'X' and self.tiles_history[1][0] == 'X':
+                        best_move = (2,0)
+                    elif self.tiles_history[2][1] == 'X' and self.tiles_history[1][2] == 'X':
+                        best_move = (2,2)
 
         #If no best move select random (low chance)
         if best_move == None: best_move = choice(self.available_moves)
