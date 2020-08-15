@@ -9,6 +9,9 @@ class IntelligentStrategy:
         self.columns = columns
 
     def bestMove(self):
+
+        if self.avail_moves == 9: return (0,0)
+
         bestScore = -inf
         move = ()
 
@@ -67,6 +70,8 @@ class IntelligentStrategy:
 
     def checkWinner(self):
 
+        if self.avail_moves == 0 : return 'draw'
+
         #Horizontal Check
         for i in range(self.rows):
             if self.tiles_history[i][0] == self.tiles_history[i][1] == self.tiles_history[i][2] != '':
@@ -82,4 +87,4 @@ class IntelligentStrategy:
            (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0] != '') ):
             return self.tiles_history[1][1]
         
-        if self.avail_moves == 0 : return 'draw'
+        

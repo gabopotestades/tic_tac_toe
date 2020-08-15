@@ -1,6 +1,7 @@
 import tkinter as tk
 from PlayIntelligently import  IntelligentStrategy
 from PlayRandomly import RandomStrategy
+from PlayHardcoded import HardcodedStrategy
 
 class Game:
 
@@ -58,7 +59,7 @@ class Game:
         self.canvas.create_window(520, 270, window = self.btnQuit)
 
         #Set rationality for testing
-        self.rationality = 1
+        #self.rationality = 2
 
     #Function to draw grid
     def redraw(self, event=None):
@@ -117,7 +118,13 @@ class Game:
             self.available_moves.remove(randomStrat)
 
         elif self.rationality == 2:
-            pass
+            hardCodedStrat = HardcodedStrategy(self.tiles_history, self.available_moves,
+            self.rows, self.columns, self.first_turn).hardCodedMove()
+
+            row = hardCodedStrat[0]
+            column = hardCodedStrat[1]
+            self.available_moves.remove(hardCodedStrat)
+
         elif self.rationality == 3:
             intelligentStrat = IntelligentStrategy(self.tiles_history, len(self.available_moves),
              self.rows, self.columns).bestMove()
@@ -175,19 +182,6 @@ class Game:
             self.end_game(winner)
 
         return winner
-
-        # return ((self.tiles_history[0][0] == self.tiles_history[0][1] == self.tiles_history[0][2]) or #Upper Row
-        #     (self.tiles_history[1][0] == self.tiles_history[1][1] == self.tiles_history[1][2]) or #Middle Row
-        #     (self.tiles_history[2][0] == self.tiles_history[2][1] == self.tiles_history[2][2]) or #Bottom Row
-
-        #     (self.tiles_history[0][0] == self.tiles_history[1][0] == self.tiles_history[2][0]) or #Left Column
-        #     (self.tiles_history[0][1] == self.tiles_history[1][1] == self.tiles_history[2][1]) or #Middle Column
-        #     (self.tiles_history[0][2] == self.tiles_history[1][2] == self.tiles_history[2][2]) or #Right Column
-            
-        #     #Upper Left to Bottom Right Diagonal
-        #     (self.tiles_history[0][0] == self.tiles_history[1][1] == self.tiles_history[2][2]) or 
-        #     #Bottom Left to Upper Right Diagonal
-        #     (self.tiles_history[0][2] == self.tiles_history[1][1] == self.tiles_history[2][0]))
 
     #Check if someone has already won
     def end_game(self, mode):
