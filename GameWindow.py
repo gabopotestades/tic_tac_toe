@@ -10,7 +10,7 @@ class Game:
         #Setup grid
         self.master = master
         self.rationality = rationality
-        self.master.title("Tic Tac Toe")
+        #self.master.title("Tic Tac Toe")
         self.master.resizable(width = False, height = False)
         self.w_height = 300
         self.w_width = self.w_height * 2

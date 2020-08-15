@@ -12,7 +12,14 @@ class Main:
                 message_label.config(text='Select a rationality level!')
             else:
                 self.master.withdraw()
+                title = 'Tic Tac Toe '
+                if value == 1: title += '- Random'
+                elif value == 2: title += '- Hard coded'
+                elif value == 3: title += '- Minimax'
+                elif value == 4: title += '- Alphabeta Pruning'
+    
                 self.newWindow = tk.Toplevel(self.master)
+                self.newWindow.title(title)
                 self.app = Game(self.newWindow, value)
         
         #Removes message if level is selected
