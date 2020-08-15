@@ -76,7 +76,8 @@ class IntelligentStrategy:
             return minimizing_BestScore
 
     def alphaBetaPrunning(self, depth, alpha, beta, isMaximizing):
-        score_lookup = {'X': -1, 'O': 1, 'draw': 0}
+        #Weights are increased to make winning a priority
+        score_lookup = {'X': -100, 'O': 100, 'draw': 0}
         result = self.checkWinner()
 
         if result != None: return score_lookup[result]
