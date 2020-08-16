@@ -13,10 +13,12 @@ class HardcodedStrategy:
 
     def hardCodedMove(self):
 
+        #Prioritize center tile
         if self.tiles_history[1][1] == '': return (1,1)
 
         best_move = None
 
+        #Prioritize winning second then third preventing human to win
         for item in self.available_moves:
 
             row = item[0]
@@ -56,8 +58,8 @@ class HardcodedStrategy:
                     #Select random corner
                     best_move = choice([(0,2), (2,0), (0,0), (2,2) ]) 
                 
-                #If X entered first move not in center and corner then second move is corner
                 if len(self.available_moves) == 6:
+                    #If X entered first move not in center and corner then second move is corner
                     if self.tiles_history[1][2] == 'X' and self.tiles_history[0][0] == 'X':
                         best_move = (0,2)
                     elif self.tiles_history[1][2] == 'X' and self.tiles_history[2][0] == 'X':
@@ -66,6 +68,8 @@ class HardcodedStrategy:
                         best_move = (0,0)
                     elif self.tiles_history[1][0] == 'X' and self.tiles_history[2][2] == 'X':
                         best_move = (2,0)
+
+                    #If X entered in two center edges  
                     elif self.tiles_history[0][1] == 'X' and self.tiles_history[1][0] == 'X':
                         best_move = (0,0)
                     elif self.tiles_history[0][1] == 'X' and self.tiles_history[1][2] == 'X':
@@ -74,6 +78,13 @@ class HardcodedStrategy:
                         best_move = (2,0)
                     elif self.tiles_history[2][1] == 'X' and self.tiles_history[1][2] == 'X':
                         best_move = (2,2)
+
+                    #If X enter in two corners opposite of each other
+                    elif (self.tiles_history[0][0] == 'X' and self.tiles_history[2][2] == 'X') or \
+                        (self.tiles_history[2][0] == 'X' and self.tiles_history[0][2] == 'X'):
+                         #Select random edge
+                        best_move = choice([(0,1), (1,0), (1,2), (2,1)])
+                    
 
         #If no best move select random (low chance)
         if best_move == None: best_move = choice(self.available_moves)
