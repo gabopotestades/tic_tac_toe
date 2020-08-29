@@ -52,23 +52,23 @@ class Main:
         label.grid(row=2, columnspan=4, ipadx=40, ipady=0)
 
         rBtnRandom = tk.Radiobutton(self.master, text = "Level 0 (Random)", variable = var, value = 1, command = sel)
-        rBtnRandom.config(bg = self.background_color, font=("Calibri", 12))
+        rBtnRandom.config(bg = self.background_color, font=("Goudy Old Style", 12))
         rBtnRandom.grid(row=3, columnspan=4, ipadx=40, ipady=0)
 
         rBtnHard = tk.Radiobutton(self.master, text = "Level 1 (Hard-coded)", variable = var, value = 2, command = sel)
-        rBtnHard.config(bg = self.background_color, font=("Calibri", 12))
+        rBtnHard.config(bg = self.background_color, font=("Goudy Old Style", 12))
         rBtnHard.grid(row=4, columnspan=4, ipadx=0, ipady=0)
 
         rBtnSearch = tk.Radiobutton(self.master, text = "Level 2 (Minimax)", variable = var, value = 3, command = sel)
-        rBtnSearch.config(bg = self.background_color, font=("Calibri", 12))
+        rBtnSearch.config(bg = self.background_color, font=("Goudy Old Style", 12))
         rBtnSearch.grid(row=5, columnspan=4, ipadx=0, ipady=0)
 
         rBtnSearch = tk.Radiobutton(self.master, text = "Level 3 (Alphabeta Prunning)", variable = var, value = 4, command = sel)
-        rBtnSearch.config(bg = self.background_color, font=("Calibri", 12))
+        rBtnSearch.config(bg = self.background_color, font=("Goudy Old Style", 12))
         rBtnSearch.grid(row=6, columnspan=4, ipadx=0, ipady=0)
 
         btnAccept = tk.Button(self.master, text = "Accept", command = choice)
-        btnAccept.config(font=("Calibri", 12))
+        btnAccept.config(font=("Goudy Old Style", 12))
         btnAccept.grid(row=8, columnspan =4, ipadx = 10, pady=(20, 0))
 
 if __name__ == "__main__":
