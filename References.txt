@@ -1,3 +1,4 @@
 https://www.programming-techniques.com/2019/10/tic-tac-toe-game-project-using-python.html
 https://stackoverflow.com/questions/1056316/algorithm-for-determining-tic-tac-toe-game-over
 https://www.youtube.com/watch?v=l-hh51ncgDI
+https://codereview.stackexchange.com/questions/231787/minimax-algorithm-for-tic-tac-toe-in-python

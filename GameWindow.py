@@ -126,9 +126,10 @@ class Game:
             self.available_moves.remove(hardCodedStrat)
 
         elif self.rationality > 2:
-            intelligentStrat = IntelligentStrategy(self.tiles_history, len(self.available_moves),
-             self.rows, self.columns).bestMove(self.rationality)
 
+            intelligentStrat = IntelligentStrategy(self.tiles_history, len(self.available_moves),
+             self.rows, self.columns, self.rationality).bestMove()
+            
             row = intelligentStrat[0]
             column = intelligentStrat[1]
             self.available_moves.remove(intelligentStrat)

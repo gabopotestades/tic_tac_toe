@@ -1,20 +1,32 @@
+import pickle
 from math import inf
 
 class IntelligentStrategy:
 
-    def __init__(self, tiles_history, avail_moves, rows, columns):
+    def __init__(self, tiles_history, avail_moves, rows, columns, rationality):
         self.tiles_history = tiles_history
         self.avail_moves = avail_moves
         self.rows = rows
         self.columns = columns
+        self.rationality = rationality
+        self.memo_name = 'memo_mm' if self.rationality == 3 else 'memo_ab'
 
-    def bestMove(self, rationality):
+        try:
+            with open(self.memo_name, 'rb') as f:
+                self.memo = pickle.load(f)
+        except:
+            self.memo = {}
 
-        #To skip first move since it's always (0,0) if O is first
-        #if self.avail_moves == 9: return (0,0)
+    def bestMove(self):
 
         bestScore = -inf
         move = ()
+
+        #Return move if already in memo table
+        try:
+            return self.memo[flattenToTuple(self.tiles_history)]
+        except:
+            pass
 
         #Instantiate root node for Minimax
         for i in range(self.rows):
@@ -22,7 +34,7 @@ class IntelligentStrategy:
                 if self.tiles_history[i][j] == '':
                     self.tiles_history[i][j]  = 'O'
                     self.avail_moves -= 1
-                    if rationality == 3:
+                    if self.rationality == 3:
                         score = self.miniMax(0, False)
                     else:
                         score = self.alphaBetaPrunning(0, -inf, inf, False)
@@ -33,6 +45,11 @@ class IntelligentStrategy:
                         bestScore = score
                         move = (i,j)
         
+        #Add to memo table
+        self.memo[flattenToTuple(self.tiles_history)] = move
+        with open(self.memo_name,'wb') as f:
+            pickle.dump(self.memo,f)
+
         return move
 
     def miniMax(self, depth, isMaximizing):
@@ -181,3 +198,7 @@ class IntelligentStrategy:
 #Convert empty tile to a player for simulation
 def convertEmpty(tile, player):
     return player if tile == '' else tile
+
+#Flatten the tile history and convert to tuple
+def flattenToTuple(tiles_history):
+    return tuple([item for sublist in tiles_history for item in sublist])
