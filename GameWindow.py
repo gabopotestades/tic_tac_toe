@@ -5,12 +5,13 @@ from PlayHardcoded import HardcodedStrategy
 
 class Game:
 
-    def __init__(self, master, rationality):
+    def __init__(self, rootWindow, master, rationality):
         
-        #Setup grid
-        self.master = master
+        self.rootWindow = rootWindow
+        self.master = master # refers to this TopLevel widget
         self.rationality = rationality
-        #self.master.title("Tic Tac Toe")
+
+        #Setup grid
         self.master.resizable(width = False, height = False)
         self.w_height = 300
         self.w_width = self.w_height * 2
@@ -235,6 +236,7 @@ class Game:
         if self.first_turn == "O":
             self.AI_turn()
 
-    #Quit the program
+    # destroy this TopLevel widget and restore root window
     def quit_game(self):
-        self.master.quit()
+        self.master.destroy()
+        self.rootWindow.deiconify()
